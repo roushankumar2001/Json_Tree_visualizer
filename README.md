@@ -7,9 +7,7 @@ It allows users to visualize, explore, and search JSON data in a hierarchical tr
 
 ## 🚀 **Live Demo**
 
-🔗 [Click to view live](https://your-vercel-link.vercel.app)  
-*(Replace with your actual link after deployment)*
-
+🔗 [Click to view live](https://json-tree-visualizer-pi.vercel.app/)
 ---
 
 ## 🧩 **Features**
@@ -94,9 +92,26 @@ npm start
 
 ---
 
+📸 Screenshots
+![mobile view](images/mobile.png)
+![desktop](images/desktop.png)
+![search](images/scarch.png)
+
+---
+
 🧑‍💻 Author
 
 Roushan Kumar
+## 📫 Let’s Connect  
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/roushan-kumar-764b691b4/)  
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:roushan.fs.dev@gmail.com)  
+
+---
+
+## 👀 Profile Visitors  
+
+![Visitors Count](https://komarev.com/ghpvc/?username=roushankumar2001&repo=portfolio-website&color=blue&style=for-the-badge)
 
 ---
 
@@ -104,14 +119,3 @@ Roushan Kumar
 
 This project fulfills the requirements of the
 APIWIZ - Frontend Intern / SDE I / SDE II / SDE III Assignment
-
-
-
-
-
----
-
-📸 Screenshots
-	
----
-
