@@ -94,8 +94,8 @@ npm start
 
 📸 Screenshots
 ![mobile view](images/mobile.png)
-![desktop](images/desktop.png)
-![search](images/scarch.png)
+![desktop view](images/desktop.png)
+![search](images/search.png)
 
 ---
 
