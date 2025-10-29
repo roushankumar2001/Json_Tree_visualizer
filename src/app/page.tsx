@@ -105,29 +105,32 @@ export default function Home() {
         </span>
       </div>
 
-      {/* 🧱 Layout: Input | Tree */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <JsonInput onVisualize={handleVisualize} />
-        <div
-          className={`${
-            dark ? 'bg-gray-800' : 'bg-gray-100'
-          } p-2 sm:p-3 rounded border border-gray-400`}
-        >
-          <ReactFlowProvider>
-            <TreeView
-              nodes={nodes}
-              edges={edges}
-              dark={dark}
-              matchedPath={matchedPath}
-              fullJson={fullJson}
-              setNodes={setNodes}
-              setEdges={setEdges}
-              expandedPaths={expandedPaths}
-              setExpandedPaths={setExpandedPaths}
-            />
-          </ReactFlowProvider>
-        </div>
-      </div>
-    </main>
+     
+      <div className="flex flex-col gap-4">
+
+  <JsonInput onVisualize={handleVisualize} />
+
+  {/* React Flow TreeView — Full Width */}
+  <div
+    className={`${
+      dark ? 'bg-gray-800' : 'bg-gray-100'
+    } p-2 sm:p-3 rounded border border-gray-400 w-full`}
+  >
+    <ReactFlowProvider>
+      <TreeView
+        nodes={nodes}
+        edges={edges}
+        dark={dark}
+        matchedPath={matchedPath}
+        fullJson={fullJson}
+        setNodes={setNodes}
+        setEdges={setEdges}
+        expandedPaths={expandedPaths}
+        setExpandedPaths={setExpandedPaths}
+      />
+    </ReactFlowProvider>
+  </div>
+</div>
+</main>
   );
 }

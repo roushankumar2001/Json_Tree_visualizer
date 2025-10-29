@@ -85,7 +85,7 @@ export default function TreeView({
   });
 
   return (
-    <div className="h-[500px] w-full border rounded relative">
+    <div className="h-[700px] w-full border rounded relative">
       <ReactFlow
         nodes={highlightedNodes}
         edges={edges}
