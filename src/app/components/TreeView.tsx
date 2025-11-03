@@ -1,7 +1,13 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import ReactFlow, { Background, Controls, MiniMap, useReactFlow, NodeMouseHandler } from 'reactflow';
+import ReactFlow, {
+  Background,
+  Controls,
+  MiniMap,
+  useReactFlow,
+  NodeMouseHandler,
+} from 'reactflow';
 import 'reactflow/dist/style.css';
 import { jsonToNodes } from './utils/jsonToNodes';
 
@@ -32,18 +38,14 @@ export default function TreeView({
     if (nodes.length) fitView({ padding: 0.2 });
   }, [nodes, fitView]);
 
+  // 🟢 Handle expand/collapse logic
   const handleNodeClick: NodeMouseHandler = (_, node) => {
     const path = node.data?.path;
     if (!path || !node.data?.expandable) return;
 
     const newPaths = new Set(expandedPaths);
-    if (expandedPaths.has(path)) {
-      // Collapse
-      newPaths.delete(path);
-    } else {
-      // Expand
-      newPaths.add(path);
-    }
+    if (expandedPaths.has(path)) newPaths.delete(path);
+    else newPaths.add(path);
 
     setExpandedPaths(newPaths);
 
@@ -58,19 +60,36 @@ export default function TreeView({
     setEdges(newEdges);
   };
 
-  // Highlight logic (same as before)
-  const highlightedNodes = nodes.map((n) => {
-    if (!matchedPath) return n;
+  // 🌈 Type-based color coding
+  const getNodeColor = (type: string): string => {
+    switch (type) {
+      case 'object':
+        return dark ? '#4b5dff' : '#a2b4ff'; // blue/purple
+      case 'array':
+        return dark ? '#3fbf6b' : '#a6f7b5'; // green
+      default:
+        return dark ? '#ffb347' : '#ffd580'; // yellow/orange (primitive)
+    }
+  };
 
+  // 🎯 Highlight logic + color code styling
+  const styledNodes = nodes.map((n) => {
+    const color = getNodeColor(n.data?.type);
     let border = '1px solid #333';
-    if (n.path === matchedPath) border = '3px solid red';
-    else if (matchedPath.startsWith(n.path)) border = '3px solid green';
-    else if (n.path.startsWith(matchedPath)) border = '3px solid yellow';
+
+    if (matchedPath) {
+      if (n.path === matchedPath) border = '3px solid red';
+      else if (matchedPath.startsWith(n.path)) border = '3px solid green';
+      else if (n.path.startsWith(matchedPath)) border = '3px solid yellow';
+    }
 
     return {
       ...n,
       style: {
-        ...n.style,
+        background: color,
+        color: dark ? '#fff' : '#000',
+        borderRadius: 8,
+        padding: 6,
         border,
         boxShadow:
           border === '3px solid red'
@@ -85,9 +104,9 @@ export default function TreeView({
   });
 
   return (
-    <div className="h-[700px] w-full border rounded relative">
+    <div className="h-[600px] w-full border rounded relative">
       <ReactFlow
-        nodes={highlightedNodes}
+        nodes={styledNodes}
         edges={edges}
         onNodeClick={handleNodeClick}
         fitView
@@ -98,7 +117,10 @@ export default function TreeView({
         }}
         style={{ background: dark ? '#111' : '#fff' }}
       >
-        <MiniMap nodeColor={(n: any): string => n.style?.background ?? '#ccc'} />        <Controls />
+        <MiniMap
+          nodeColor={(n: any) => n.style?.background ?? '#ccc'}
+        />
+        <Controls />
         <Background />
       </ReactFlow>
     </div>

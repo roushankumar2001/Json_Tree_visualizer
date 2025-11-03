@@ -114,7 +114,7 @@ export default function Home() {
   <div
     className={`${
       dark ? 'bg-gray-800' : 'bg-gray-100'
-    } p-2 sm:p-3 rounded border border-gray-400 w-full`}
+    } p-2 sm:p-3 rounded border border-gray-400 w-[85%]`}
   >
     <ReactFlowProvider>
       <TreeView

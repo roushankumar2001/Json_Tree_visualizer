@@ -1,4 +1,4 @@
-import { Node,Edge } from 'reactflow';
+import { Node, Edge } from 'reactflow';
 
 export interface CustomNode extends Node {
   path?: string;
@@ -23,8 +23,11 @@ export function jsonToNodes(
 
   const id = `n-${idCounter++}`;
   const label = path === '$' ? 'root' : path.split('.').slice(-1)[0];
+
   const isArray = Array.isArray(data);
   const isObject = typeof data === 'object' && data !== null && !isArray;
+  const type: 'object' | 'array' | 'primitive' =
+    isArray ? 'array' : isObject ? 'object' : 'primitive';
 
   // Determine children count
   const childCount = isArray
@@ -34,30 +37,39 @@ export function jsonToNodes(
     : 0;
 
   const expandable = childCount > 0;
-  const isLarge = childCount > 2; // 👈 auto-collapse if >2
-
-  // Default collapsed state
+  const isLarge = childCount > 2; // auto-collapse large nodes
   const isExpanded = expandedPaths.has(path) || (!isLarge && depth < maxDepth);
+
+  // 🌈 Color coding by data type
+  const typeColors = {
+    object: '#a2b4ff',   // blue/purple tone
+    array: '#a6f7b5',    // green tone
+    primitive: '#ffd580' // yellow/orange tone
+  };
+
+  const background = typeColors[type];
 
   nodes.push({
     id,
     data: {
       label:
         label +
-        (isArray ? ` [${childCount}]` : isObject ? ' { }' : '') +
+        (isArray ? ` [${childCount}]` : isObject ? ' { }' : `: ${String(data)}`) +
         (isLarge && !isExpanded ? ' (collapsed)' : ''),
       path,
       expandable,
+      type, // 👈 added for TreeView styling
     },
     position: { x: depth * 250, y: idCounter * 60 },
     style: {
-      background: expandable ? '#eef' : '#fff',
+      background,
       color: '#000',
-      border: expandable ? '1px solid #0077ff' : '1px solid #aaa',
+      border: expandable ? '1px solid #333' : '1px solid #999',
       borderRadius: 6,
       padding: 10,
       fontSize: 12,
       cursor: expandable ? 'pointer' : 'default',
+      boxShadow: expandable ? '0 0 5px rgba(0,0,0,0.2)' : 'none',
     },
     path,
   });
@@ -67,10 +79,12 @@ export function jsonToNodes(
       id: `e-${parentId}-${id}`,
       source: parentId,
       target: id,
+      type: 'smoothstep',
+      animated: true,
     });
   }
 
-  // Expand only if small or manually opened
+  // Recursive expansion
   if (isExpanded) {
     if (isArray) {
       data.forEach((item, i) => {
@@ -97,7 +111,7 @@ export function jsonToNodes(
         );
         nodes.push(...child.nodes);
         edges.push(...child.edges);
-      }
+      };
     }
   }
 
